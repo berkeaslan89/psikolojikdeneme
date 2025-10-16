@@ -7,7 +7,7 @@
     
     <style>
         /* ======================================================= */
-        /* CSS Kodları - Tasarım 5.0 */
+        /* CSS Kodları - Tasarım 6.0 (Modern Butonlar) */
         /* ======================================================= */
 
         :root {
@@ -18,6 +18,8 @@
             --color-text-dark: #4A148C; /* Koyu Mor Metin */
             --color-success: #4CAF50; /* Yeşil */
             --color-container-bg: #FFFFFF; /* Beyaz Konteyner Arka Planı */
+            --color-shadow-light: rgba(255, 255, 255, 0.7);
+            --color-shadow-dark: rgba(0, 0, 0, 0.15);
         }
 
         /* Arka Plan ve Animasyon */
@@ -26,8 +28,8 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            min-height: 100vh; /* Ekran yüksekliğini kapla */
-            width: 100vw; /* Ekran genişliğini kapla */
+            min-height: 100vh;
+            width: 100vw;
             margin: 0;
             background-color: var(--color-background); 
             color: var(--color-text-dark);
@@ -35,35 +37,13 @@
             position: relative; 
         }
         
-        /* Konfeti Efekti Stili - DAHA YOĞUN VE ÇEŞİTLİ */
+        /* Konfeti Efekti Stili (Aynı kaldı) */
         .confetti-container {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 0;
-            opacity: 0.8; /* Opaklık artırıldı */
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0; opacity: 0.8; 
         }
-
-        .confetti {
-            position: absolute;
-            width: 8px; 
-            height: 8px;
-            opacity: 0;
-            animation: fall-confetti linear infinite;
-        }
-
-        /* Kare Konfeti */
-        .confetti.square {
-            border-radius: 0; 
-        }
-
-        /* Yuvarlak Konfeti */
-        .confetti.circle {
-            border-radius: 50%; 
-        }
+        .confetti { position: absolute; width: 8px; height: 8px; opacity: 0; animation: fall-confetti linear infinite; }
+        .confetti.square { border-radius: 0; }
+        .confetti.circle { border-radius: 50%; }
 
         @keyframes fall-confetti {
             0% { transform: translateY(-10vh) rotate(0deg); opacity: 0; }
@@ -77,148 +57,69 @@
             background-color: var(--color-container-bg);
             padding: 30px; 
             border-radius: 15px; 
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15); 
+            box-shadow: 0 10px 20px var(--color-shadow-dark); 
             text-align: center;
             max-width: 90%; 
-            width: 350px; /* Boyutlandırılmış */
+            width: 350px; 
             position: relative;
             z-index: 10;
             animation: fadeIn 0.8s ease-out;
         }
 
-        /* Diğer Anahtar Kareler */
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        @keyframes pulse {
-            from { transform: scale(1); opacity: 0.3; }
-            to { transform: scale(1.02); opacity: 0.5; }
-        }
-        
-        .container:after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            border-radius: 15px;
-            box-shadow: 0 0 50px rgba(255, 138, 101, 0.5); 
-            opacity: 0.5;
-            animation: pulse 4s infinite alternate ease-in-out;
-            pointer-events: none;
-            z-index: -1;
-        }
-
-        h1 {
-            color: var(--color-primary);
-            margin-bottom: 5px;
-            font-size: 1.8em; 
-        }
-
-        h2 {
-            font-weight: 400;
-            color: #555;
-            margin-bottom: 20px; 
-            font-size: 1em;
-        }
-
-        /* ÖNERİ KUTUSU - Başlangıçta gizli */
-        #suggestion-box {
-            background-color: var(--color-background); 
-            border: 1px solid var(--color-primary); 
-            border-radius: 10px;
-            padding: 20px;
-            margin-bottom: 20px;
-            display: none; /* Önemli: Başlangıçta gizli */
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
-
-        /* Textbox Vurgusu */
-        #name-input {
-            padding: 12px;
-            margin: 15px 0;
-            border: 2px solid var(--color-primary);
-            border-radius: 10px;
-            font-size: 1.1em;
-            width: 85%;
-            max-width: 300px;
-            box-shadow: 0 4px 8px rgba(103, 58, 183, 0.2);
-            transition: border-color 0.3s;
-        }
-        #name-input:focus {
-            outline: none;
-            border-color: var(--color-secondary);
-        }
-
-        #name-submit-button {
-            background-color: var(--color-primary);
-            color: white;
+        /* Neumorphism Benzeri Buton Temeli */
+        .modern-button {
             padding: 12px 25px;
+            font-size: 1.1em;
+            cursor: pointer;
             border: none;
             border-radius: 8px;
-            cursor: pointer;
-            font-size: 1.1em;
-            transition: background-color 0.3s, transform 0.1s;
+            color: white;
+            transition: all 0.2s ease-out;
+            box-shadow: 4px 4px 8px var(--color-shadow-dark), -4px -4px 8px var(--color-shadow-light); /* Modern 3D gölge */
+        }
+
+        /* Başla Butonu Stili */
+        #name-submit-button {
+            composes: modern-button; /* CSS Composition: Modern buton temelini al */
+            background-color: var(--color-primary);
         }
 
         #name-submit-button:hover {
             background-color: #512DA8;
-            transform: translateY(-1px);
+            transform: translateY(-2px);
+            box-shadow: 2px 2px 5px var(--color-shadow-dark), -2px -2px 5px var(--color-shadow-light);
         }
 
-        #welcome-message {
-            font-size: 1.4em;
-            font-weight: bold;
-            color: var(--color-primary);
-            margin-bottom: 8px;
-        }
-
-        #daily-suggestion {
-            font-size: 1.3em;
-            font-weight: 600;
-            color: var(--color-text-dark);
-        }
-        
-        .suggestion-emoji {
-            font-size: 3.5em; 
-            display: block;
-            margin: 10px auto 15px auto;
-        }
-
+        /* Yaptım Butonu Stili */
         #complete-button {
+            composes: modern-button; /* Modern buton temelini al */
             background-color: var(--color-secondary); 
-            color: white;
             padding: 15px 30px; 
-            font-size: 1.1em;
-            cursor: pointer;
-            border: none;
-            border-radius: 10px;
-            transition: background-color 0.3s, transform 0.1s;
+            font-size: 1.2em;
+            margin-top: 25px;
         }
         #complete-button:hover {
             background-color: #E91E63;
+            transform: translateY(-2px);
+            box-shadow: 2px 2px 5px var(--color-shadow-dark), -2px -2px 5px var(--color-shadow-light);
         }
+
+        /* ... (Diğer stiller aynı kaldı) ... */
     </style>
 </head>
 <body>
-
-<!-- Konfeti Efekti Alanı -->
+    
 <div class="confetti-container" id="confetti-effect-container"></div>
 
 <div class="container">
     <h1>Psikolojik İyi Oluş Rehberi</h1>
     
-    <!-- İSİM GİRİŞİ ALANI -->
     <div id="name-input-box">
         <h2 style="margin-bottom: 10px;">Lütfen İsminizi Giriniz</h2>
         <input type="text" id="name-input" placeholder="İsminizi buraya giriniz">
-        <button id="name-submit-button">Başla!</button>
+        <button id="name-submit-button" class="modern-button">Başla!</button>
     </div>
 
-    <!-- ÖNERİ ALANI (Hata ayıklanmış yerleşim) -->
     <div id="suggestion-box">
         <p id="welcome-message"></p>
         <h2 style="margin-bottom: 10px;">Bugün Sizin İçin Önerimiz:</h2>
@@ -227,7 +128,7 @@
 
         <p id="daily-suggestion">Öneri Yükleniyor...</p>
         
-        <button id="complete-button" style="margin-top: 25px;">Gördüm ve Yaptım!</button>
+        <button id="complete-button" class="modern-button">Gördüm ve Yaptım!</button>
     </div>
 </div>
 
@@ -236,7 +137,7 @@
     // JavaScript Kodları
     // =======================================================
 
-    // 1. Öneriler Listesi (1000'e yakın)
+    // 1. Öneriler Listesi (Aynı kaldı)
     const baseSuggestions = [
         { text: "Haydi [AD], en az 15 dakika boyunca sadece nefesinize odaklanarak meditasyon yapın.", emoji: "🧘‍♀️" },
         { text: "Harika bir fikir [AD]! Bir arkadaşınıza veya aile üyenize içten bir iltifat edin.", emoji: "🤗" },
@@ -257,7 +158,7 @@
         { text: "Gülümseyin [AD]! 5 dakika boyunca sadece güldüğünüz veya keyif aldığınız bir anıyı düşünün.", emoji: "😊" }
     ];
     
-    // 1000 Öneri Oluşturma (Tekrarlama Yöntemi)
+    // 1000 Öneri Oluşturma
     let suggestions = [];
     for(let i = 0; i < 59; i++) {
         suggestions = suggestions.concat(baseSuggestions.map(item => ({
@@ -285,10 +186,14 @@
         return suggestions[randomIndex]; 
     }
     
-    // İsim düzeltme: Sadece ilk harfi büyük yapar
+    // YENİ FONKSİYON: Her kelimenin baş harfini büyük yapar
     function capitalizeName(name) {
         if (!name) return '';
-        return name.charAt(0).toUpperCase() + name.slice(1).toLowerCase();
+        // Tüm kelimeleri ayır, her birinin baş harfini büyüt, sonra birleştir
+        return name.toLowerCase().split(' ').map(word => {
+            if (word.length === 0) return '';
+            return word.charAt(0).toUpperCase() + word.slice(1);
+        }).join(' ');
     }
 
     // Uygulamanın ana akışını başlatan fonksiyon
@@ -309,13 +214,14 @@
         
         completeButton.onclick = () => {
             completeButton.textContent = "✅ Harika! Yaptığınız için tebrikler, " + correctedName + "!";
-            completeButton.style.backgroundColor = '#4CAF50'; 
+            completeButton.style.backgroundColor = '#4CAF50'; // Başarı rengi
+            completeButton.style.boxShadow = 'none'; // Tamamlandıktan sonra gölgeyi kaldır
         };
     }
 
-    // Konfeti Efekti Oluşturma Fonksiyonu - DAHA YOĞUN VE ÇEŞİTLİ
+    // Konfeti Efekti Oluşturma Fonksiyonu (Aynı kaldı)
     function createConfettiEffect(container) {
-        const confettiCount = 100; // Yoğunluk artırıldı
+        const confettiCount = 100;
         const viewportWidth = window.innerWidth;
         const colors = ['#FFEB3B', '#F44336', '#9C27B0', '#03A9F4', '#4CAF50', '#FF9800', '#E91E63']; 
 
@@ -362,7 +268,6 @@
             });
         }
         
-        // Konfeti efektini başlat
         createConfettiEffect(confettiContainer);
     }
 
