@@ -3,141 +3,135 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kişiselleştirilmiş Rehber - Final Sürüm</title>
+    <title>Kişiselleştirilmiş Rehber - Final Tasarım</title>
     
     <style>
         /* ======================================================= */
-        /* CSS Kodları - Tasarım 2.1 */
+        /* CSS Kodları - Tasarım 3.0 (Boyutlandırılmış & Animasyonlu) */
         /* ======================================================= */
 
         :root {
-            /* Ana Renk Paleti */
-            --color-primary: #673AB7; /* Koyu Mor (Ana Vurgu) */
-            --color-secondary: #FF4081; /* Pembe (Buton Vurgusu) */
-            --color-background-light: #EDE7F6; /* Çok Açık Mor */
-            --color-text-dark: #303F9F; /* Koyu Mavi/Mor */
+            /* Ana Renk Paleti (Açık ve Canlı Tonlar) */
+            --color-primary: #8E24AA; /* Mor */
+            --color-secondary: #FF8A65; /* Açık Turuncu/Şeftali */
+            --color-background: #F3E5F5; /* Çok Açık Lila/Pembe Arka Plan */
+            --color-text-dark: #4A148C; /* Koyu Mor Metin */
             --color-success: #4CAF50; /* Yeşil */
+            --color-container-bg: #FFFFFF; /* Beyaz Konteyner Arka Planı */
         }
 
-        /* Ekranı Kaplayan Arka Plan */
+        /* Arka Plan ve Animasyon */
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             display: flex;
             justify-content: center;
             align-items: center;
-            min-height: 100vh; /* Ekran yüksekliğini kapla */
-            width: 100vw; /* Ekran genişliğini kapla */
+            min-height: 100vh;
+            width: 100vw;
             margin: 0;
-            background-color: var(--color-background-light); /* Arka plan rengi */
+            background-color: var(--color-background); 
             color: var(--color-text-dark);
-            overflow: hidden; /* Kaydırmayı engelle */
-        }
-        
-        /* Konteyner Stili */
-        .container {
-            background-color: white;
-            padding: 40px;
-            border-radius: 20px;
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
-            text-align: center;
-            max-width: 90%; 
-            width: 450px;
-            position: relative;
+            overflow: hidden; 
         }
 
+        /* Konteyner Boyutunu Küçültme */
+        .container {
+            background-color: var(--color-container-bg);
+            padding: 30px; /* İç boşluğu biraz azalt */
+            border-radius: 15px; /* Köşe yuvarlaklığını azalt */
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15); /* Gölgeyi azalt */
+            text-align: center;
+            max-width: 90%; 
+            width: 350px; /* Sabit genişliği düşür */
+            position: relative;
+            
+            /* BASİT BİR GİRİŞ ANİMASYONU */
+            animation: fadeIn 0.8s ease-out;
+        }
+
+        /* Ekstra Animasyon: Container'ın sürekli hafifçe parlaması */
+        .container:after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            border-radius: 15px;
+            box-shadow: 0 0 50px rgba(255, 138, 101, 0.5); /* Hafif parlaklık */
+            opacity: 0.5;
+            animation: pulse 4s infinite alternate ease-in-out;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        /* Anahtar Kareler (Keyframes) */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes pulse {
+            from { transform: scale(1); opacity: 0.3; }
+            to { transform: scale(1.02); opacity: 0.5; }
+        }
+        
         h1 {
             color: var(--color-primary);
             margin-bottom: 5px;
-            font-size: 2em;
+            font-size: 1.8em; /* Fontu küçült */
         }
 
         h2 {
             font-weight: 400;
             color: #555;
-            margin-bottom: 30px;
-            font-size: 1.1em;
+            margin-bottom: 20px; /* Boşluğu azalt */
+            font-size: 1em;
         }
 
         #suggestion-box {
-            background-color: var(--color-background-light);
-            border: 2px solid var(--color-primary);
-            border-radius: 15px;
-            padding: 25px;
-            margin-bottom: 25px;
-            display: none; 
-        }
-
-        #name-input-box { display: block; }
-
-        /* Textbox Vurgusu */
-        #name-input {
-            padding: 15px;
-            margin: 15px 0;
-            border: 2px solid var(--color-primary);
+            background-color: var(--color-background); /* Arka plan rengini kullan */
+            border: 1px solid var(--color-primary); /* Kenarlığı azalt */
             border-radius: 10px;
-            font-size: 1.2em;
-            width: 80%;
-            max-width: 300px;
-            box-shadow: 0 4px 8px rgba(103, 58, 183, 0.2);
-            transition: border-color 0.3s;
-        }
-        #name-input:focus {
-            outline: none;
-            border-color: var(--color-secondary);
+            padding: 20px;
+            margin-bottom: 20px;
+            display: none; 
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
 
-        #name-submit-button {
-            background-color: var(--color-primary);
-            color: white;
-            padding: 12px 25px;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
+        /* ... (Giriş elemanları stilleri biraz küçültüldü) ... */
+        #name-input {
+            padding: 12px;
             font-size: 1.1em;
-            transition: background-color 0.3s, transform 0.1s;
-        }
-        #name-submit-button:hover {
-            background-color: #512DA8;
-            transform: translateY(-1px);
+            width: 85%;
         }
 
         #welcome-message {
-            font-size: 1.8em;
+            font-size: 1.4em;
             font-weight: bold;
             color: var(--color-primary);
-            margin-bottom: 10px;
+            margin-bottom: 8px;
         }
 
         #daily-suggestion {
-            font-size: 1.5em;
+            font-size: 1.3em;
             font-weight: 600;
             color: var(--color-text-dark);
         }
         
         .suggestion-emoji {
-            font-size: 4em; 
-            display: block;
-            margin: 15px auto 20px auto;
+            font-size: 3.5em; /* Emoji boyutu azaltıldı */
+            margin: 10px auto 15px auto;
         }
 
         #complete-button {
             background-color: var(--color-secondary); 
-            color: white;
-            padding: 18px 35px;
-            font-size: 1.2em;
-            cursor: pointer;
-            border: none;
-            border-radius: 10px;
-            transition: background-color 0.3s, transform 0.1s;
-        }
-        #complete-button:hover {
-            background-color: #E91E63;
+            padding: 15px 30px; /* Buton boyutu azaltıldı */
+            font-size: 1.1em;
         }
     </style>
 </head>
 <body>
-
-<!-- Hareketli arka plan kaldırıldı -->
 
 <div class="container">
     <h1>Psikolojik İyi Oluş Rehberi</h1>
@@ -164,7 +158,7 @@
 
 <script>
     // =======================================================
-    // JavaScript Kodları (Hata ayıklanmış)
+    // JavaScript Kodları (Mantık aynı kaldı)
     // =======================================================
 
     // 1. Öneriler Listesi
@@ -209,7 +203,6 @@
         nameInputBox.style.display = 'none';
         suggestionBox.style.display = 'block';
 
-        // Metin Değişikliği: "Hoş Geldiniz"
         welcomeMessage.textContent = `Hoş Geldiniz Sayın ${userName}!`;
 
         const randomSuggestionObject = getRandomSuggestion();
@@ -221,7 +214,6 @@
         
         completeButton.onclick = () => {
             completeButton.textContent = "✅ Harika! Yaptığınız için tebrikler, " + userName + "!";
-            // Hata ayıklandı: Doğrudan hex kodu kullanılıyor
             completeButton.style.backgroundColor = '#4CAF50'; 
         };
     }
@@ -248,8 +240,6 @@
                 }
             });
         }
-        
-        // Hareketli arka plan fonksiyonu çağrısı KALDIRILDI.
     }
 
     // Uygulamayı Başlat
