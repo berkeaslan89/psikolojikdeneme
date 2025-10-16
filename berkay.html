@@ -11,12 +11,13 @@
         /* ======================================================= */
 
         :root {
-            --color-primary: #8E24AA; 
-            --color-secondary: #FF8A65; 
-            --color-background: #F3E5F5; 
-            --color-text-dark: #4A148C; 
-            --color-success: #4CAF50; 
-            --color-container-bg: #FFFFFF; 
+            /* Ana Renk Paleti */
+            --color-primary: #8E24AA; /* Mor */
+            --color-secondary: #FF8A65; /* Açık Turuncu/Şeftali */
+            --color-background: #F3E5F5; /* Çok Açık Lila/Pembe Arka Plan */
+            --color-text-dark: #4A148C; /* Koyu Mor Metin */
+            --color-success: #4CAF50; /* Yeşil */
+            --color-container-bg: #FFFFFF; /* Beyaz Konteyner Arka Planı */
         }
 
         /* Arka Plan ve Animasyon */
@@ -25,8 +26,8 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            min-height: 100vh;
-            width: 100vw;
+            min-height: 100vh; /* Ekran yüksekliğini kapla */
+            width: 100vw; /* Ekran genişliğini kapla */
             margin: 0;
             background-color: var(--color-background); 
             color: var(--color-text-dark);
@@ -48,7 +49,7 @@
 
         .confetti {
             position: absolute;
-            width: 8px; /* Boyut aynı */
+            width: 8px; 
             height: 8px;
             opacity: 0;
             animation: fall-confetti linear infinite;
@@ -68,24 +69,138 @@
             0% { transform: translateY(-10vh) rotate(0deg); opacity: 0; }
             10% { opacity: 1; }
             90% { opacity: 1; }
-            100% { transform: translateY(100vh) rotate(720deg); opacity: 0; } /* Dönüş hızı artırıldı */
+            100% { transform: translateY(100vh) rotate(720deg); opacity: 0; } 
         }
 
-        /* Konteyner ve Font Stilleri (Aynı kaldı) */
+        /* Konteyner Stili */
         .container {
             background-color: var(--color-container-bg);
-            padding: 30px;
-            border-radius: 15px;
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+            padding: 30px; 
+            border-radius: 15px; 
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15); 
             text-align: center;
             max-width: 90%; 
-            width: 350px;
+            width: 350px; /* Boyutlandırılmış */
             position: relative;
             z-index: 10;
             animation: fadeIn 0.8s ease-out;
         }
 
-        /* ... (Diğer stiller aynı kaldı) ... */
+        /* Diğer Anahtar Kareler */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes pulse {
+            from { transform: scale(1); opacity: 0.3; }
+            to { transform: scale(1.02); opacity: 0.5; }
+        }
+        
+        .container:after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            border-radius: 15px;
+            box-shadow: 0 0 50px rgba(255, 138, 101, 0.5); 
+            opacity: 0.5;
+            animation: pulse 4s infinite alternate ease-in-out;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        h1 {
+            color: var(--color-primary);
+            margin-bottom: 5px;
+            font-size: 1.8em; 
+        }
+
+        h2 {
+            font-weight: 400;
+            color: #555;
+            margin-bottom: 20px; 
+            font-size: 1em;
+        }
+
+        /* ÖNERİ KUTUSU - Başlangıçta gizli */
+        #suggestion-box {
+            background-color: var(--color-background); 
+            border: 1px solid var(--color-primary); 
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            display: none; /* Önemli: Başlangıçta gizli */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Textbox Vurgusu */
+        #name-input {
+            padding: 12px;
+            margin: 15px 0;
+            border: 2px solid var(--color-primary);
+            border-radius: 10px;
+            font-size: 1.1em;
+            width: 85%;
+            max-width: 300px;
+            box-shadow: 0 4px 8px rgba(103, 58, 183, 0.2);
+            transition: border-color 0.3s;
+        }
+        #name-input:focus {
+            outline: none;
+            border-color: var(--color-secondary);
+        }
+
+        #name-submit-button {
+            background-color: var(--color-primary);
+            color: white;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1.1em;
+            transition: background-color 0.3s, transform 0.1s;
+        }
+
+        #name-submit-button:hover {
+            background-color: #512DA8;
+            transform: translateY(-1px);
+        }
+
+        #welcome-message {
+            font-size: 1.4em;
+            font-weight: bold;
+            color: var(--color-primary);
+            margin-bottom: 8px;
+        }
+
+        #daily-suggestion {
+            font-size: 1.3em;
+            font-weight: 600;
+            color: var(--color-text-dark);
+        }
+        
+        .suggestion-emoji {
+            font-size: 3.5em; 
+            display: block;
+            margin: 10px auto 15px auto;
+        }
+
+        #complete-button {
+            background-color: var(--color-secondary); 
+            color: white;
+            padding: 15px 30px; 
+            font-size: 1.1em;
+            cursor: pointer;
+            border: none;
+            border-radius: 10px;
+            transition: background-color 0.3s, transform 0.1s;
+        }
+        #complete-button:hover {
+            background-color: #E91E63;
+        }
     </style>
 </head>
 <body>
@@ -96,14 +211,14 @@
 <div class="container">
     <h1>Psikolojik İyi Oluş Rehberi</h1>
     
-    <!-- İsim Girişi Alanı -->
+    <!-- İSİM GİRİŞİ ALANI -->
     <div id="name-input-box">
         <h2 style="margin-bottom: 10px;">Lütfen İsminizi Giriniz</h2>
         <input type="text" id="name-input" placeholder="İsminizi buraya giriniz">
         <button id="name-submit-button">Başla!</button>
     </div>
 
-    <!-- Öneri Alanı -->
+    <!-- ÖNERİ ALANI (Hata ayıklanmış yerleşim) -->
     <div id="suggestion-box">
         <p id="welcome-message"></p>
         <h2 style="margin-bottom: 10px;">Bugün Sizin İçin Önerimiz:</h2>
@@ -142,7 +257,7 @@
         { text: "Gülümseyin [AD]! 5 dakika boyunca sadece güldüğünüz veya keyif aldığınız bir anıyı düşünün.", emoji: "😊" }
     ];
     
-    // 1000 Öneri Oluşturma
+    // 1000 Öneri Oluşturma (Tekrarlama Yöntemi)
     let suggestions = [];
     for(let i = 0; i < 59; i++) {
         suggestions = suggestions.concat(baseSuggestions.map(item => ({
@@ -170,27 +285,23 @@
         return suggestions[randomIndex]; 
     }
     
-    // YENİ FONKSİYON: Sadece ilk harfi büyük yapar
+    // İsim düzeltme: Sadece ilk harfi büyük yapar
     function capitalizeName(name) {
         if (!name) return '';
-        // Tüm harfleri küçült, sonra ilk harfi büyüt
         return name.charAt(0).toUpperCase() + name.slice(1).toLowerCase();
     }
 
     // Uygulamanın ana akışını başlatan fonksiyon
     function startApp(userName) {
-        // İsim düzeltme: Sadece baş harfi büyük olsun
         const correctedName = capitalizeName(userName); 
         
         nameInputBox.style.display = 'none';
         suggestionBox.style.display = 'block';
 
-        // Düzeltilmiş ismi kullan
         welcomeMessage.textContent = `Hoş Geldiniz Sayın ${correctedName}!`;
 
         const randomSuggestionObject = getRandomSuggestion();
         
-        // Düzeltilmiş ismi öneri metninde kullan
         const personalizedText = randomSuggestionObject.text.replace('[AD]', correctedName);
         suggestionElement.textContent = personalizedText;
 
@@ -204,19 +315,18 @@
 
     // Konfeti Efekti Oluşturma Fonksiyonu - DAHA YOĞUN VE ÇEŞİTLİ
     function createConfettiEffect(container) {
-        const confettiCount = 100; // Yoğunluk artırıldı (önceki 50 idi)
+        const confettiCount = 100; // Yoğunluk artırıldı
         const viewportWidth = window.innerWidth;
-        const colors = ['#FFEB3B', '#F44336', '#9C27B0', '#03A9F4', '#4CAF50', '#FF9800', '#E91E63']; // Renkler çeşitlendirildi
+        const colors = ['#FFEB3B', '#F44336', '#9C27B0', '#03A9F4', '#4CAF50', '#FF9800', '#E91E63']; 
 
         for (let i = 0; i < confettiCount; i++) {
             const confetti = document.createElement('div');
             
-            // Rastgele şekil (yuvarlak veya kare)
             const isCircle = Math.random() > 0.5;
             confetti.className = isCircle ? 'confetti circle' : 'confetti square';
             
             const left = Math.random() * viewportWidth;
-            const duration = Math.random() * 4 + 4; // 4s ile 8s arası düşme süresi
+            const duration = Math.random() * 4 + 4; 
             const delay = Math.random() * 8; 
             const color = colors[Math.floor(Math.random() * colors.length)]; 
 
