@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kişiselleştirilmiş Rehber - Tasarım 2.0</title>
+    <title>Kişiselleştirilmiş Rehber - Final Sürüm</title>
     
     <style>
         /* ======================================================= */
-        /* CSS Kodları - Tasarım 2.0 */
+        /* CSS Kodları - Tasarım 2.1 */
         /* ======================================================= */
 
         :root {
@@ -19,7 +19,7 @@
             --color-success: #4CAF50; /* Yeşil */
         }
 
-        /* Ekranı Kaplayan Arka Plan (Yağmur/Konfeti Efekti) */
+        /* Ekranı Kaplayan Arka Plan */
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             display: flex;
@@ -28,40 +28,11 @@
             min-height: 100vh; /* Ekran yüksekliğini kapla */
             width: 100vw; /* Ekran genişliğini kapla */
             margin: 0;
-            background: var(--color-background-light);
-            overflow: hidden; /* Taşmaları gizle */
+            background-color: var(--color-background-light); /* Arka plan rengi */
             color: var(--color-text-dark);
-            position: relative; /* Efektler için temel konum */
+            overflow: hidden; /* Kaydırmayı engelle */
         }
         
-        /* Hareketli Arka Plan Efekti (Basit Yağmur Damlası Simülasyonu) */
-        .effect-rain {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none; /* Tıklama olaylarını engelle */
-            z-index: 0;
-            opacity: 0.5;
-        }
-
-        .drop {
-            position: absolute;
-            background-color: var(--color-primary);
-            width: 2px;
-            height: 10px;
-            border-radius: 50%;
-            animation: fall linear infinite;
-        }
-
-        @keyframes fall {
-            to {
-                transform: translateY(100vh);
-                opacity: 0;
-            }
-        }
-
         /* Konteyner Stili */
         .container {
             background-color: white;
@@ -69,10 +40,9 @@
             border-radius: 20px;
             box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
             text-align: center;
-            max-width: 90%; /* Daha çok yer kapla */
+            max-width: 90%; 
             width: 450px;
             position: relative;
-            z-index: 10; /* Efektin üstünde kalmasını sağla */
         }
 
         h1 {
@@ -145,6 +115,146 @@
         }
         
         .suggestion-emoji {
-            font-size: 4em; /* Daha büyük emoji */
+            font-size: 4em; 
             display: block;
-            margin: 15px a
+            margin: 15px auto 20px auto;
+        }
+
+        #complete-button {
+            background-color: var(--color-secondary); 
+            color: white;
+            padding: 18px 35px;
+            font-size: 1.2em;
+            cursor: pointer;
+            border: none;
+            border-radius: 10px;
+            transition: background-color 0.3s, transform 0.1s;
+        }
+        #complete-button:hover {
+            background-color: #E91E63;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Hareketli arka plan kaldırıldı -->
+
+<div class="container">
+    <h1>Psikolojik İyi Oluş Rehberi</h1>
+    
+    <!-- İsim Girişi Alanı -->
+    <div id="name-input-box">
+        <h2 style="margin-bottom: 10px;">Lütfen İsminizi Giriniz</h2>
+        <input type="text" id="name-input" placeholder="İsminizi buraya giriniz">
+        <button id="name-submit-button">Başla!</button>
+    </div>
+
+    <!-- Öneri Alanı -->
+    <div id="suggestion-box">
+        <p id="welcome-message"></p>
+        <h2 style="margin-bottom: 10px;">Bugün Sizin İçin Önerimiz:</h2>
+        
+        <span id="suggestion-emoji" class="suggestion-emoji"></span>
+
+        <p id="daily-suggestion">Öneri Yükleniyor...</p>
+        
+        <button id="complete-button" style="margin-top: 25px;">Gördüm ve Yaptım!</button>
+    </div>
+</div>
+
+<script>
+    // =======================================================
+    // JavaScript Kodları (Hata ayıklanmış)
+    // =======================================================
+
+    // 1. Öneriler Listesi
+    const suggestions = [
+        { text: "Haydi [AD], en az 15 dakika boyunca sadece nefesinize odaklanarak meditasyon yapın.", emoji: "🧘‍♀️" },
+        { text: "Harika bir fikir [AD]! Bir arkadaşınıza veya aile üyenize içten bir iltifat edin.", emoji: "🤗" },
+        { text: "Dışarı çıkma zamanı [AD]! Güneşi hissederek 10 dakikalık tempolu bir yürüyüş yapın.", emoji: "🚶‍♀️" },
+        { text: "Bugün kendinize zaman ayırın [AD]. Ertelediğiniz bir zevk aktivitesini yapın (kitap okumak, müzik dinlemek gibi).", emoji: "☕" },
+        { text: "[AD], bir bardak su içerken, suyun tadına odaklanarak farkındalık anı yaratın.", emoji: "💧" },
+        { text: "Şimdi çözüm zamanı [AD]! Sizi strese sokan bir şeyi yazın ve ilk küçük adımı belirleyin.", emoji: "📝" },
+        { text: "Dijital detoks yapın [AD]. Sosyal medyadan 1 saat uzak durun ve bu süreyi fiziksel bir eyleme ayırın.", emoji: "📵" },
+        { text: "Güzel şeyleri hatırlayın [AD]. Uyumadan önce gün içinde minnettar olduğunuz 3 şeyi not alın.", emoji: "✨" },
+        { text: "Kibarlık yapın [AD]. Başka birine küçük, karşılıksız bir yardım yapın.", emoji: "🤝" },
+        { text: "Yeni şeyler öğrenin [AD]! Yeni bir beceri için 5 dakikalık kısa bir video izleyin.", emoji: "🧠" },
+        { text: "Enerjiyi yükseltin [AD]. Sevdiğiniz bir müziği açın ve 5 dakika dans edin.", emoji: "🎶" },
+        { text: "[AD], evde veya çalışma alanınızda 5 dakika boyunca küçük bir alanı toparlayın.", emoji: "🧹" },
+        { text: "Sessizliği dinleyin [AD]. Gözlerinizi kapatın ve ortamdaki 3 farklı sesi dinleyin.", emoji: "👂" },
+        { text: "Kendinizi şımartın [AD]. En sevdiğiniz içecekten bir bardak hazırlayın ve yavaşça keyfini çıkarın.", emoji: "🍹" },
+        { text: "Gülümseyin [AD]! 5 dakika boyunca sadece güldüğünüz veya keyif aldığınız bir anıyı düşünün.", emoji: "😊" }
+    ];
+
+    // Gerekli HTML öğelerini seçme
+    const nameInputBox = document.getElementById('name-input-box');
+    const suggestionBox = document.getElementById('suggestion-box');
+    const nameInput = document.getElementById('name-input');
+    const nameSubmitButton = document.getElementById('name-submit-button');
+    const welcomeMessage = document.getElementById('welcome-message');
+    const suggestionElement = document.getElementById('daily-suggestion');
+    const completeButton = document.getElementById('complete-button');
+    const emojiElement = document.getElementById('suggestion-emoji'); 
+    
+    // Session Storage kullanılıyor
+    const NAME_STORAGE_KEY = 'session_user_name'; 
+
+    function getRandomSuggestion() {
+        const randomIndex = Math.floor(Math.random() * suggestions.length);
+        return suggestions[randomIndex]; 
+    }
+    
+    // Uygulamanın ana akışını başlatan fonksiyon
+    function startApp(userName) {
+        nameInputBox.style.display = 'none';
+        suggestionBox.style.display = 'block';
+
+        // Metin Değişikliği: "Hoş Geldiniz"
+        welcomeMessage.textContent = `Hoş Geldiniz Sayın ${userName}!`;
+
+        const randomSuggestionObject = getRandomSuggestion();
+        
+        const personalizedText = randomSuggestionObject.text.replace('[AD]', userName);
+        suggestionElement.textContent = personalizedText;
+
+        emojiElement.textContent = randomSuggestionObject.emoji;
+        
+        completeButton.onclick = () => {
+            completeButton.textContent = "✅ Harika! Yaptığınız için tebrikler, " + userName + "!";
+            // Hata ayıklandı: Doğrudan hex kodu kullanılıyor
+            completeButton.style.backgroundColor = '#4CAF50'; 
+        };
+    }
+
+    // İlk Yükleme Fonksiyonu
+    function init() {
+        const storedName = sessionStorage.getItem(NAME_STORAGE_KEY);
+
+        if (storedName) {
+            startApp(storedName);
+        } else {
+            nameSubmitButton.addEventListener('click', () => {
+                const userName = nameInput.value.trim();
+                if (userName.length > 0) {
+                    sessionStorage.setItem(NAME_STORAGE_KEY, userName);
+                    startApp(userName);
+                } else {
+                    alert("Lütfen isminizi giriniz.");
+                }
+            });
+            nameInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    nameSubmitButton.click();
+                }
+            });
+        }
+        
+        // Hareketli arka plan fonksiyonu çağrısı KALDIRILDI.
+    }
+
+    // Uygulamayı Başlat
+    init();
+</script>
+
+</body>
+</html>
