@@ -28,40 +28,41 @@
 
         .container { background-color: var(--color-container-bg); padding: 30px; border-radius: 15px; box-shadow: 0 10px 20px var(--color-shadow-dark); text-align: center; max-width: 90%; width: 350px; position: relative; z-index: 10; animation: fadeIn 0.8s ease-out; }
         
-        /* Modern Buton Stilleri */
         .modern-button { padding: 12px 25px; font-size: 1.1em; cursor: pointer; border: none; border-radius: 8px; color: white; transition: all 0.2s ease-out; box-shadow: 4px 4px 8px var(--color-shadow-dark), -4px -4px 8px var(--color-shadow-light); }
         #name-submit-button { background-color: var(--color-primary); }
         #complete-button { background-color: var(--color-secondary); padding: 15px 30px; font-size: 1.2em; margin-top: 25px; }
         #name-submit-button:hover, #complete-button:hover { transform: translateY(-2px); box-shadow: 2px 2px 5px var(--color-shadow-dark), -2px -2px 5px var(--color-shadow-light); }
 
-        /* Diğer Alanlar */
         #suggestion-box { background-color: var(--color-background); border: 1px solid var(--color-primary); border-radius: 10px; padding: 20px; margin-bottom: 20px; display: none; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); }
         #name-input { padding: 12px; font-size: 1.1em; width: 85%; }
-        /* ... (Diğer küçük stiller aynı kaldı) ... */
+        
+        .suggestion-emoji {
+            font-size: 10em; /* DÜZELTME: Emoji boyutu 6em olarak ayarlandı */
+            display: block;
+            margin: 10px auto 15px auto;
+        }
     </style>
 </head>
 <body>
-    
+
 <div class="confetti-container" id="confetti-effect-container"></div>
 
 <div class="container">
     <h1>Psikolojik İyi Oluş Rehberi</h1>
     
-    <!-- İSİM GİRİŞİ ALANI -->
     <div id="name-input-box">
         <h2 style="margin-bottom: 10px;">Lütfen İsminizi Giriniz</h2>
         <input type="text" id="name-input" placeholder="İsminizi buraya giriniz">
         <button id="name-submit-button" class="modern-button">Başla!</button>
     </div>
 
-    <!-- ÖNERİ ALANI (Metinler Artık JavaScript ile doldurulacak) -->
     <div id="suggestion-box">
         <p id="welcome-message"></p>
-        <h2 id="suggestion-header" style="margin-bottom: 10px;"></h2> <!-- BOŞ BIRAKILDI -->
+        <h2 id="suggestion-header" style="margin-bottom: 10px;"></h2>
         
         <span id="suggestion-emoji" class="suggestion-emoji"></span>
 
-        <p id="daily-suggestion"></p> <!-- BOŞ BIRAKILDI -->
+        <p id="daily-suggestion"></p>
         
         <button id="complete-button" class="modern-button">Gördüm ve Yaptım!</button>
     </div>
@@ -81,7 +82,7 @@
         { text: "Dışarı çıkma zamanı [AD]! Güneşi hissederek 10 dakikalık tempolu bir yürüyüş yapın.", emoji: "🚶‍♀️" },
         { text: "Bugün kendinize zaman ayırın [AD]. Ertelediğiniz bir zevk aktivitesini yapın (kitap okumak, müzik dinlemek gibi).", emoji: "☕" },
         { text: "[AD], bir bardak su içerken, suyun tadına odaklanarak farkındalık anı yaratın.", emoji: "💧" },
-        // Lütfen bu listeyi, bir önceki yanıttaki (Tasarım 7.0) 300+ öneri ile tamamen doldurun.
+        // ... Lütfen bu listeyi, bir önceki yanıttaki (Tasarım 7.0) 300+ öneri ile tamamen doldurun.
     ];
 
     // Gerekli HTML öğelerini seçme
@@ -90,7 +91,7 @@
     const nameInput = document.getElementById('name-input');
     const nameSubmitButton = document.getElementById('name-submit-button');
     const welcomeMessage = document.getElementById('welcome-message');
-    const suggestionHeader = document.getElementById('suggestion-header'); // YENİ Başlık Seçildi
+    const suggestionHeader = document.getElementById('suggestion-header'); 
     const suggestionElement = document.getElementById('daily-suggestion');
     const completeButton = document.getElementById('complete-button');
     const emojiElement = document.getElementById('suggestion-emoji'); 
@@ -103,7 +104,6 @@
         return suggestions[randomIndex]; 
     }
     
-    // Her kelimenin baş harfini büyük yapar
     function capitalizeName(name) {
         if (!name) return '';
         return name.toLowerCase().split(' ').map(word => {
@@ -112,7 +112,6 @@
         }).join(' ');
     }
 
-    // Uygulamanın ana akışını başlatan fonksiyon
     function startApp(userName) {
         const correctedName = capitalizeName(userName); 
         
@@ -121,15 +120,13 @@
 
         welcomeMessage.textContent = `Hoş Geldiniz Sayın ${correctedName}!`;
         
-        // DÜZELTME: Başlık ve Yükleme Metni JavaScript ile dolduruluyor
         suggestionHeader.textContent = `Bugün Sizin İçin Önerimiz:`; 
-        suggestionElement.textContent = `Öneri Yükleniyor...`; // Anlık geri bildirim için
+        suggestionElement.textContent = `Öneri Yükleniyor...`; 
 
         const randomSuggestionObject = getRandomSuggestion();
         
         const personalizedText = randomSuggestionObject.text.replace('[AD]', correctedName);
         
-        // Asıl öneriyi yerleştiriyoruz
         suggestionElement.textContent = personalizedText;
         emojiElement.textContent = randomSuggestionObject.emoji;
         
@@ -140,7 +137,6 @@
         };
     }
 
-    // Konfeti Efekti Oluşturma Fonksiyonu (Aynı kaldı)
     function createConfettiEffect(container) {
         const confettiCount = 100;
         const viewportWidth = window.innerWidth;
@@ -166,7 +162,6 @@
         }
     }
 
-    // İlk Yükleme Fonksiyonu
     function init() {
         const storedName = sessionStorage.getItem(NAME_STORAGE_KEY);
 
