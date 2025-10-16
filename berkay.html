@@ -1,1 +1,264 @@
-https://berkeaslan89.github.io/psikolojikdeneme/berkay.html
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kişiselleştirilmiş Rehber - Final Sürüm</title>
+    
+    <style>
+        /* ======================================================= */
+        /* CSS Kodları - Tasarım 5.0 */
+        /* ======================================================= */
+
+        :root {
+            --color-primary: #8E24AA; 
+            --color-secondary: #FF8A65; 
+            --color-background: #F3E5F5; 
+            --color-text-dark: #4A148C; 
+            --color-success: #4CAF50; 
+            --color-container-bg: #FFFFFF; 
+        }
+
+        /* Arka Plan ve Animasyon */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            width: 100vw;
+            margin: 0;
+            background-color: var(--color-background); 
+            color: var(--color-text-dark);
+            overflow: hidden; 
+            position: relative; 
+        }
+        
+        /* Konfeti Efekti Stili - DAHA YOĞUN VE ÇEŞİTLİ */
+        .confetti-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            opacity: 0.8; /* Opaklık artırıldı */
+        }
+
+        .confetti {
+            position: absolute;
+            width: 8px; /* Boyut aynı */
+            height: 8px;
+            opacity: 0;
+            animation: fall-confetti linear infinite;
+        }
+
+        /* Kare Konfeti */
+        .confetti.square {
+            border-radius: 0; 
+        }
+
+        /* Yuvarlak Konfeti */
+        .confetti.circle {
+            border-radius: 50%; 
+        }
+
+        @keyframes fall-confetti {
+            0% { transform: translateY(-10vh) rotate(0deg); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { transform: translateY(100vh) rotate(720deg); opacity: 0; } /* Dönüş hızı artırıldı */
+        }
+
+        /* Konteyner ve Font Stilleri (Aynı kaldı) */
+        .container {
+            background-color: var(--color-container-bg);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+            text-align: center;
+            max-width: 90%; 
+            width: 350px;
+            position: relative;
+            z-index: 10;
+            animation: fadeIn 0.8s ease-out;
+        }
+
+        /* ... (Diğer stiller aynı kaldı) ... */
+    </style>
+</head>
+<body>
+
+<!-- Konfeti Efekti Alanı -->
+<div class="confetti-container" id="confetti-effect-container"></div>
+
+<div class="container">
+    <h1>Psikolojik İyi Oluş Rehberi</h1>
+    
+    <!-- İsim Girişi Alanı -->
+    <div id="name-input-box">
+        <h2 style="margin-bottom: 10px;">Lütfen İsminizi Giriniz</h2>
+        <input type="text" id="name-input" placeholder="İsminizi buraya giriniz">
+        <button id="name-submit-button">Başla!</button>
+    </div>
+
+    <!-- Öneri Alanı -->
+    <div id="suggestion-box">
+        <p id="welcome-message"></p>
+        <h2 style="margin-bottom: 10px;">Bugün Sizin İçin Önerimiz:</h2>
+        
+        <span id="suggestion-emoji" class="suggestion-emoji"></span>
+
+        <p id="daily-suggestion">Öneri Yükleniyor...</p>
+        
+        <button id="complete-button" style="margin-top: 25px;">Gördüm ve Yaptım!</button>
+    </div>
+</div>
+
+<script>
+    // =======================================================
+    // JavaScript Kodları
+    // =======================================================
+
+    // 1. Öneriler Listesi (1000'e yakın)
+    const baseSuggestions = [
+        { text: "Haydi [AD], en az 15 dakika boyunca sadece nefesinize odaklanarak meditasyon yapın.", emoji: "🧘‍♀️" },
+        { text: "Harika bir fikir [AD]! Bir arkadaşınıza veya aile üyenize içten bir iltifat edin.", emoji: "🤗" },
+        { text: "Dışarı çıkma zamanı [AD]! Güneşi hissederek 10 dakikalık tempolu bir yürüyüş yapın.", emoji: "🚶‍♀️" },
+        { text: "Bugün kendinize zaman ayırın [AD]. Ertelediğiniz bir zevk aktivitesini yapın (kitap okumak, müzik dinlemek gibi).", emoji: "☕" },
+        { text: "[AD], bir bardak su içerken, suyun tadına odaklanarak farkındalık anı yaratın.", emoji: "💧" },
+        { text: "Şimdi çözüm zamanı [AD]! Sizi strese sokan bir şeyi yazın ve ilk küçük adımı belirleyin.", emoji: "📝" },
+        { text: "Dijital detoks yapın [AD]. Sosyal medyadan 1 saat uzak durun ve bu süreyi fiziksel bir eyleme ayırın.", emoji: "📵" },
+        { text: "Güzel şeyleri hatırlayın [AD]. Uyumadan önce gün içinde minnettar olduğunuz 3 şeyi not alın.", emoji: "✨" },
+        { text: "Kibarlık yapın [AD]. Başka birine küçük, karşılıksız bir yardım yapın.", emoji: "🤝" },
+        { text: "Yeni şeyler öğrenin [AD]! Yeni bir beceri için 5 dakikalık kısa bir video izleyin.", emoji: "🧠" },
+        { text: "Enerjiyi yükseltin [AD]. Sevdiğiniz bir müziği açın ve 5 dakika dans edin.", emoji: "🎶" },
+        { text: "Hayatına bir değişiklik kat [AD]. Yeni bir dil öğrenmek için bir uygulama indirin.", emoji: "🗣️" },
+        { text: "Kendine dürüst ol [AD]. Seni neyin gerçekten mutlu ettiğini bul ve not al.", emoji: "💡" },
+        { text: "[AD], evde veya çalışma alanınızda 5 dakika boyunca küçük bir alanı toparlayın.", emoji: "🧹" },
+        { text: "Sessizliği dinleyin [AD]. Gözlerinizi kapatın ve ortamdaki 3 farklı sesi dinleyin.", emoji: "👂" },
+        { text: "Kendinizi şımartın [AD]. En sevdiğiniz içecekten bir bardak hazırlayın ve yavaşça keyfini çıkarın.", emoji: "🍹" },
+        { text: "Gülümseyin [AD]! 5 dakika boyunca sadece güldüğünüz veya keyif aldığınız bir anıyı düşünün.", emoji: "😊" }
+    ];
+    
+    // 1000 Öneri Oluşturma
+    let suggestions = [];
+    for(let i = 0; i < 59; i++) {
+        suggestions = suggestions.concat(baseSuggestions.map(item => ({
+            text: item.text.replace('[AD]', '[AD]').replace('en az 15 dakika', `yaklaşık ${15 + i % 5} dakika`), 
+            emoji: item.emoji
+        })));
+    }
+
+
+    // ... (Gerekli değişkenler) ...
+    const nameInputBox = document.getElementById('name-input-box');
+    const suggestionBox = document.getElementById('suggestion-box');
+    const nameInput = document.getElementById('name-input');
+    const nameSubmitButton = document.getElementById('name-submit-button');
+    const welcomeMessage = document.getElementById('welcome-message');
+    const suggestionElement = document.getElementById('daily-suggestion');
+    const completeButton = document.getElementById('complete-button');
+    const emojiElement = document.getElementById('suggestion-emoji'); 
+    const confettiContainer = document.getElementById('confetti-effect-container'); 
+    
+    const NAME_STORAGE_KEY = 'session_user_name'; 
+
+    function getRandomSuggestion() {
+        const randomIndex = Math.floor(Math.random() * suggestions.length);
+        return suggestions[randomIndex]; 
+    }
+    
+    // YENİ FONKSİYON: Sadece ilk harfi büyük yapar
+    function capitalizeName(name) {
+        if (!name) return '';
+        // Tüm harfleri küçült, sonra ilk harfi büyüt
+        return name.charAt(0).toUpperCase() + name.slice(1).toLowerCase();
+    }
+
+    // Uygulamanın ana akışını başlatan fonksiyon
+    function startApp(userName) {
+        // İsim düzeltme: Sadece baş harfi büyük olsun
+        const correctedName = capitalizeName(userName); 
+        
+        nameInputBox.style.display = 'none';
+        suggestionBox.style.display = 'block';
+
+        // Düzeltilmiş ismi kullan
+        welcomeMessage.textContent = `Hoş Geldiniz Sayın ${correctedName}!`;
+
+        const randomSuggestionObject = getRandomSuggestion();
+        
+        // Düzeltilmiş ismi öneri metninde kullan
+        const personalizedText = randomSuggestionObject.text.replace('[AD]', correctedName);
+        suggestionElement.textContent = personalizedText;
+
+        emojiElement.textContent = randomSuggestionObject.emoji;
+        
+        completeButton.onclick = () => {
+            completeButton.textContent = "✅ Harika! Yaptığınız için tebrikler, " + correctedName + "!";
+            completeButton.style.backgroundColor = '#4CAF50'; 
+        };
+    }
+
+    // Konfeti Efekti Oluşturma Fonksiyonu - DAHA YOĞUN VE ÇEŞİTLİ
+    function createConfettiEffect(container) {
+        const confettiCount = 100; // Yoğunluk artırıldı (önceki 50 idi)
+        const viewportWidth = window.innerWidth;
+        const colors = ['#FFEB3B', '#F44336', '#9C27B0', '#03A9F4', '#4CAF50', '#FF9800', '#E91E63']; // Renkler çeşitlendirildi
+
+        for (let i = 0; i < confettiCount; i++) {
+            const confetti = document.createElement('div');
+            
+            // Rastgele şekil (yuvarlak veya kare)
+            const isCircle = Math.random() > 0.5;
+            confetti.className = isCircle ? 'confetti circle' : 'confetti square';
+            
+            const left = Math.random() * viewportWidth;
+            const duration = Math.random() * 4 + 4; // 4s ile 8s arası düşme süresi
+            const delay = Math.random() * 8; 
+            const color = colors[Math.floor(Math.random() * colors.length)]; 
+
+            confetti.style.left = `${left}px`;
+            confetti.style.animationDuration = `${duration}s`;
+            confetti.style.animationDelay = `${delay}s`;
+            confetti.style.backgroundColor = color;
+            
+            container.appendChild(confetti);
+        }
+    }
+
+    // İlk Yükleme Fonksiyonu
+    function init() {
+        const storedName = sessionStorage.getItem(NAME_STORAGE_KEY);
+
+        if (storedName) {
+            startApp(storedName);
+        } else {
+            nameSubmitButton.addEventListener('click', () => {
+                const userName = nameInput.value.trim();
+                if (userName.length > 0) {
+                    sessionStorage.setItem(NAME_STORAGE_KEY, userName);
+                    startApp(userName);
+                } else {
+                    alert("Lütfen isminizi giriniz.");
+                }
+            });
+            nameInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    nameSubmitButton.click();
+                }
+            });
+        }
+        
+        // Konfeti efektini başlat
+        createConfettiEffect(confettiContainer);
+    }
+
+    // Uygulamayı Başlat
+    init();
+</script>
+
+</body>
+</html>
